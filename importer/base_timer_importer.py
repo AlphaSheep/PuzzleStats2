@@ -1,12 +1,17 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Dict, Set
 
 from result import Result
 
 
 class ITimerImporter(ABC):
 
+    def __init__(self) -> None:
+        self.results: List[Result] = []
+        self.categories: Set[str] = set()
+        self.dnf_counts: Dict[str, int] = {}
+
     @abstractmethod
-    def load_all(self) -> List[Result]:
+    def import_all(self) -> List[Result]:
         raise NotImplementedError
 
