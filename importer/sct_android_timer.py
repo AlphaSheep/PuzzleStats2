@@ -34,10 +34,10 @@ class SCTAndroidImporter(ITimerImporter):
         source = 'SpeedCube Timer Android: ' + source_file_name
         last = 0
 
-        with open(source_file_name) as thisFile:
-            this_csv_file = csv.reader(thisFile)
+        with open(source_file_name) as file_stream:
+            csv_file = csv.reader(file_stream)
 
-            for solution_line in this_csv_file:
+            for solution_line in csv_file:
                 if solution_line[0] == 'Date & Time':
                     continue  # Skip header line
                 if int(solution_line[0][2:4]) > last:
