@@ -14,9 +14,9 @@ class PrismaImporter(ITimerImporter):
 
     def import_all(self) -> None:
         for csv_file in _PRISMA_CSV_FILES:
-            self.import_from_file(csv_file)
+            self._import_from_file(csv_file)
 
-    def import_from_file(self, source_file_name: str) -> None:
+    def _import_from_file(self, source_file_name: str) -> None:
         source = 'Prisma: ' + source_file_name
         with open(source_file_name) as file_stream:
             csv_file = csv.reader(file_stream)

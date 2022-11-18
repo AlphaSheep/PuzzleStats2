@@ -12,6 +12,6 @@ class ITimerImporter(ABC):
         self.dnf_counts: Dict[str, int] = {}
 
     @abstractmethod
-    def import_all(self) -> List[Result]:
+    def import_all(self) -> None:
         raise NotImplementedError
 

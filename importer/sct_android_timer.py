@@ -28,9 +28,9 @@ class SCTAndroidImporter(ITimerImporter):
             month = _ANDROID_MONTHS_START[i] + 1
             category = _ANDROID_CATEGORY_NAMES[i].strip()
 
-            self.import_from_file(category, month, source_file_name)
+            self._import_from_file(category, month, source_file_name)
 
-    def import_from_file(self, category: str, month: int, source_file_name: str) -> None:
+    def _import_from_file(self, category: str, month: int, source_file_name: str) -> None:
         source = 'SpeedCube Timer Android: ' + source_file_name
         last = 0
 
