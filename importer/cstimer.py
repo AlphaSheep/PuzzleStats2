@@ -29,28 +29,33 @@ class CSTimerImporter(ITimerImporter):
 
     def import_all(self) -> None:
         for source_file_name in CSTIMER_RESULT_FILES:
-            source = 'cstimer: ' + source_file_name
+            self._import_from_file(source_file_name)
 
-            with open(source_file_name) as file_stream:
-                raw_results = json.load(file_stream)
+    def _import_from_file(self, source_file_name):
+        source = 'cstimer: ' + source_file_name
 
-            for solution in raw_results:
-                category = solution[1].strip()
-                if category in CSTIMER_CATEGORIES_MAP:
-                    category = CSTIMER_CATEGORIES_MAP[category]
-                self.categories.add(category)
+        with open(source_file_name) as file_stream:
+            raw_results = json.load(file_stream)
 
-                start = datetime.strptime(solution[0], '%Y-%m-%dT%H:%M:%S')
-                time = timedelta(seconds=float(solution[2]))
+        for solution in raw_results:
+            category = solution[1].strip()
+            if category in CSTIMER_CATEGORIES_MAP:
+                category = CSTIMER_CATEGORIES_MAP[category]
+            self.categories.add(category)
 
-                dnf = solution[3]
-                if dnf == -1:
-                    if category in self.dnf_counts.keys():
-                        self.dnf_counts[category] += 1
-                    else:
-                        self.dnf_counts[category] = 1
-
-                penalty = timedelta(seconds=0)
-
-                result = Result(start, time, category, penalty, source)
+            dnf_flag = solution[3]
+            if dnf_flag == -1:
+                if category in self.dnf_counts.keys():
+                    self.dnf_counts[category] += 1
+                else:
+                    self.dnf_counts[category] = 1
+            else:
+                result = self._interpret_solution_line(solution, source, category)
                 self.results.append(result)
+
+    @staticmethod
+    def _interpret_solution_line(solution, source, category):
+        start = datetime.strptime(solution[0], '%Y-%m-%dT%H:%M:%S')
+        time = timedelta(seconds=float(solution[2]))
+        penalty = timedelta(seconds=0)
+        return Result(start, time, category, penalty, source)
