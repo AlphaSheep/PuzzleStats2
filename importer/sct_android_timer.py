@@ -23,6 +23,7 @@ _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
 class SCTAndroidImporter(ITimerImporter):
 
     def import_all(self) -> None:
+        self.reset()
         for i in range(len(_ANDROID_CSV_FILES)):
             source_file_name = _ANDROID_CSV_FILES[i]
             month = _ANDROID_MONTHS_START[i] + 1

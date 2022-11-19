@@ -13,6 +13,7 @@ _PRISMA_CSV_FILES = [
 class PrismaImporter(ITimerImporter):
 
     def import_all(self) -> None:
+        self.reset()
         for csv_file in _PRISMA_CSV_FILES:
             self._import_from_file(csv_file)
 

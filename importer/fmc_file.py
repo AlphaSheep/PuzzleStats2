@@ -13,6 +13,7 @@ FMC_CATEGORIES = ['3x3 Fewest Moves'] # Correspond to the files in FMC_RESULT_FI
 class FMCFileImporter(ITimerImporter):
 
     def import_all(self) -> None:
+        self.reset()
         for iFile in range(len(FMC_RESULT_FILES)):
             source_file_name = FMC_RESULT_FILES[iFile]
 

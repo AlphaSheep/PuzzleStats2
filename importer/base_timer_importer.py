@@ -11,7 +11,9 @@ class ITimerImporter(ABC):
         self.categories: Set[str] = set()
         self.dnf_counts: Dict[str, int] = {}
 
+    def reset(self) -> None:
+        self.__init__()
+
     @abstractmethod
     def import_all(self) -> None:
         raise NotImplementedError
-

@@ -28,6 +28,7 @@ CSTIMER_CATEGORIES_MAP = {
 class CSTimerImporter(ITimerImporter):
 
     def import_all(self) -> None:
+        self.reset()
         for source_file_name in CSTIMER_RESULT_FILES:
             self._import_from_file(source_file_name)
 
