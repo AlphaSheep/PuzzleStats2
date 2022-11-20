@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import List, Union
 
 
 class Result:
@@ -11,3 +12,6 @@ class Result:
 
     def __repr__(self) -> str:
         return f"{self.category}: {self.result} . {self.start.strftime('%c')} ({self.source})"
+
+    def as_list(self) -> List[Union[datetime, timedelta, str]]:
+        return [self.start, self.result, self.category, self.penalty, self.source]
