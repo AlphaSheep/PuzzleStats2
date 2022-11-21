@@ -22,6 +22,11 @@ _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
 
 class SCTAndroidImporter(ITimerImporter):
 
+    def __init__(self):
+        super().__init__()
+        self.files: List[str] = []
+        self.category_config: List[str] = []
+
     def import_all(self) -> None:
         self.reset()
         for i in range(len(_ANDROID_CSV_FILES)):

@@ -1,23 +1,24 @@
 import csv
 from datetime import timedelta, datetime
+from typing import List
 
 from importer.base_timer_importer import ITimerImporter
 from result import Result
 
-FMC_RESULT_FILES = [
-    '../CSVDumps/FMCResults.csv']
-
-FMC_CATEGORIES = ['3x3 Fewest Moves'] # Correspond to the files in FMC_RESULT_FILES
-
 
 class FMCFileImporter(ITimerImporter):
 
+    def __init__(self):
+        super().__init__()
+        self.files: List[str] = []
+        self.category_config: List[str] = []
+
     def import_all(self) -> None:
         self.reset()
-        for iFile in range(len(FMC_RESULT_FILES)):
-            source_file_name = FMC_RESULT_FILES[iFile]
+        for iFile in range(len(self.files)):
+            source_file_name = self.files[iFile]
 
-            category = FMC_CATEGORIES[iFile].strip()
+            category = self.category_config[iFile].strip()
             self.categories.add(category)
 
             source = 'Manual FMC Results: ' + source_file_name

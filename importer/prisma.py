@@ -1,20 +1,20 @@
 import csv
 from datetime import datetime, timedelta
+from typing import List
 
 from importer.base_timer_importer import ITimerImporter
 from result import Result
 
-_PRISMA_CSV_FILES = [
-    '../CSVDumps/Prisma_Titan.csv',
-    '../CSVDumps/Prisma_Iapetus.csv',
-    '../CSVDumps/Prisma_Encaladus.csv']
-
 
 class PrismaImporter(ITimerImporter):
 
+    def __init__(self):
+        super().__init__()
+        self.files: List[str] = []
+
     def import_all(self) -> None:
         self.reset()
-        for csv_file in _PRISMA_CSV_FILES:
+        for csv_file in self.files:
             self._import_from_file(csv_file)
 
     def _import_from_file(self, source_file_name: str) -> None:

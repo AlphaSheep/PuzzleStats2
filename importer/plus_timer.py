@@ -1,34 +1,21 @@
 import csv
 from datetime import datetime, timedelta
+from typing import List, Dict
 
 from importer.base_timer_importer import ITimerImporter
 from result import Result
 
 
-PLUS_TIMER_FILES = [
-    '../CSVDumps/PlusTimerResults.csv']
-
-PLUS_TIMER_CATEGORIES = {
-    '3x3': "Rubik's cube",
-    '3x3-OH': "Rubik's cube one-handed",
-    '3x3-Feet': "Rubik's cube with feet",
-    '4x4': '4x4x4 cube',
-    '5x5': '5x5x5 cube',
-    '6x6': '6x6x6 cube',
-    '7x7': '7x7x7 cube',
-    'Pyraminx': 'Pyraminx',
-    'Megaminx': 'Megaminx',
-    'Skewb': 'Skewb',
-    '3x3-BLD': "Rubik's cube blindfolded",
-    'Square-1': 'Square-1',
-    'Clock': "Rubik's clock"}
-
-
 class PlusTimerImporter(ITimerImporter):
+
+    def __init__(self):
+        super().__init__()
+        self.files: List[str] = []
+        self.category_config: Dict[str, str] = {}
 
     def import_all(self) -> None:
         self.reset()
-        for source_file_name in PLUS_TIMER_FILES:
+        for source_file_name in self.files:
             self._import_from_file(source_file_name)
 
     def _import_from_file(self, source_file_name: str) -> None:
@@ -38,7 +25,7 @@ class PlusTimerImporter(ITimerImporter):
             csv_file = csv.reader(file_stream)
             for solution in csv_file:
 
-                category = PLUS_TIMER_CATEGORIES[solution[0]].strip()
+                category = self.category_config[solution[0]].strip()
                 self.categories.add(category)
 
                 if solution[3] == 'DNF':

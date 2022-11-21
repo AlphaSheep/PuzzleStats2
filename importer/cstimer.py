@@ -36,6 +36,12 @@ CSTIMER_CATEGORIES_MAP = {
 
 class CSTimerImporter(ITimerImporter):
 
+    def __init__(self):
+        super().__init__()
+        self.folder: str = ""
+        self.pattern: str = ""
+        self.category_config: Dict[str, str] = {}
+
     def import_all(self) -> None:
         _load_convert_and_dump_latest_cstimer_export()
         self.reset()
