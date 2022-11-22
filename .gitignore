@@ -8,4 +8,5 @@ __pycache__/
 *$py.class
 
 pip-log.txt
-/importconfig.json
+
+/import_config.json
