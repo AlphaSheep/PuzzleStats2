@@ -65,6 +65,8 @@ class ImportEngine:
             importer.category_config = importer_config["categories"]
         if "category_map" in importer_config.keys():
             importer.category_config = importer_config["category_map"]
+        if "additional_data" in importer_config.keys():
+            importer.additional_data = importer_config["additional_data"]
 
         self.attach(importer)
 

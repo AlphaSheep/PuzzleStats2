@@ -1,21 +1,10 @@
 import csv
 from datetime import datetime, timedelta
-from typing import List, Final
+from typing import List, Final, Dict, Any
 
 from importer.base_timer_importer import ITimerImporter
 from result import Result
 
-
-_ANDROID_CSV_FILES: Final[List[str]] = [
-    '../CSVDumps/3 x 3 x 3 Cube - S 11, 2014 - 09.22.25 PM.csv',
-    '../CSVDumps/2 x 2 x 2 Cube - A 01, 2014 - 11.53.51 AM.csv']
-_ANDROID_CATEGORY_NAMES: Final[List[str]] = ["Rubik's cube", "2x2x2 cube"]  # Correspond to the names in androidCSVFiles
-
-# Dates from SpeedCube Timer on Android are ambiguous
-# This assumes dates are in reverse chronological order starting from a hardcoded  month,
-# all in the same year, and with no months missing, and with the first day of
-# each month less than the last day of the previous month.
-_ANDROID_MONTHS_START: Final[List[int]] = [9, 8]
 
 _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
 
@@ -29,10 +18,10 @@ class SCTAndroidImporter(ITimerImporter):
 
     def import_all(self) -> None:
         self.reset()
-        for i in range(len(_ANDROID_CSV_FILES)):
-            source_file_name = _ANDROID_CSV_FILES[i]
-            month = _ANDROID_MONTHS_START[i] + 1
-            category = _ANDROID_CATEGORY_NAMES[i].strip()
+        for i in range(len(self.files)):
+            source_file_name = self.files[i]
+            month = self.additional_data['start_months'][i] + 1
+            category = self.category_config[i].strip()
 
             self._import_from_file(category, month, source_file_name)
 

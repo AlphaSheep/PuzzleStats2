@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Set, Union
+from typing import List, Dict, Set, Union, Any
 
 from result import Result
 
@@ -12,6 +12,8 @@ class ITimerImporter(ABC):
         self.dnf_counts: Dict[str, int] = {}
 
         self.category_config: Union[List[str], Dict[str, str]]
+
+        self.additional_data: Dict[str, Any] = {}
 
     def reset(self) -> None:
         self.results = []
