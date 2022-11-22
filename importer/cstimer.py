@@ -4,14 +4,14 @@ from re import compile, match, Pattern
 from datetime import datetime, timedelta
 from typing import Tuple, Any, Dict, List, Union
 
-from importer.base_timer_importer import ITimerImporter
+from importer.base_timer_importer import BaseTimerImporter
 from result import Result
 
 
 _DNF_FLAG = -1
 
 
-class CSTimerImporter(ITimerImporter):
+class CSTimerImporter(BaseTimerImporter):
 
     def __init__(self):
         super().__init__()

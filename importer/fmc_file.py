@@ -2,11 +2,11 @@ import csv
 from datetime import timedelta, datetime
 from typing import List
 
-from importer.base_timer_importer import ITimerImporter
+from importer.base_timer_importer import BaseTimerImporter
 from result import Result
 
 
-class FMCFileImporter(ITimerImporter):
+class FMCFileImporter(BaseTimerImporter):
 
     def __init__(self):
         super().__init__()

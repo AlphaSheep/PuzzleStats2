@@ -2,11 +2,13 @@ import csv
 from datetime import datetime, timedelta
 from typing import List, Dict
 
-from importer.base_timer_importer import ITimerImporter
+from importer.base_timer_importer import BaseTimerImporter
 from result import Result
 
+_DNF_FLAG = 'DNF'
 
-class PlusTimerImporter(ITimerImporter):
+
+class PlusTimerImporter(BaseTimerImporter):
 
     def __init__(self):
         super().__init__()
@@ -28,7 +30,7 @@ class PlusTimerImporter(ITimerImporter):
                 category = self.category_config[solution[0]].strip()
                 self.categories.add(category)
 
-                if solution[3] == 'DNF':
+                if solution[3] == _DNF_FLAG:
                     # Handle DNF penalty
                     if category in self.dnf_counts.keys():
                         self.dnf_counts[category] += 1

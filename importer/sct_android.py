@@ -2,14 +2,14 @@ import csv
 from datetime import datetime, timedelta
 from typing import List, Final, Dict, Any
 
-from importer.base_timer_importer import ITimerImporter
+from importer.base_timer_importer import BaseTimerImporter
 from result import Result
 
 
 _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
 
 
-class SCTAndroidImporter(ITimerImporter):
+class SCTAndroidImporter(BaseTimerImporter):
 
     def __init__(self):
         super().__init__()

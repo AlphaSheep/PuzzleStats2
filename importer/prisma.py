@@ -2,11 +2,13 @@ import csv
 from datetime import datetime, timedelta
 from typing import List
 
-from importer.base_timer_importer import ITimerImporter
+from importer.base_timer_importer import BaseTimerImporter
 from result import Result
 
+_DNF_FLAG = 'DNF'
 
-class PrismaImporter(ITimerImporter):
+
+class PrismaImporter(BaseTimerImporter):
 
     def __init__(self):
         super().__init__()
@@ -30,7 +32,7 @@ class PrismaImporter(ITimerImporter):
                 category = solution[10].strip()
                 self.categories.add(category)
 
-                if solution[6] == 'DNF':
+                if solution[6] == _DNF_FLAG:
                     # Ignore DNFs in the results, just keep a count
                     if category in self.dnf_counts.keys():
                         self.dnf_counts[category] += 1

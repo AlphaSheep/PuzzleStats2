@@ -4,7 +4,7 @@ from typing import List, Dict, Set, Union, Any
 from result import Result
 
 
-class ITimerImporter(ABC):
+class BaseTimerImporter(ABC):
 
     def __init__(self) -> None:
         self.results: List[Result] = []
