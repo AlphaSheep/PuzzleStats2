@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "imports": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          { "$ref": "#/$defs/files_importer_config" },
+          { "$ref": "#/$defs/latest_importer_config" }
+        ]
+      }
+    }
+  },
+  "required": [
+    "imports"
+  ],
+  "$defs": {
+    "files_importer_config": {
+      "type": "object",
+      "properties": {
+        "engine": {"$ref": "#/$defs/engine"},
+        "type": {"type":  "string", "const": "files"},
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "category_map": {"$ref": "#/$defs/category_map"},
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "additional_data": {"type": "object"}
+      },
+      "required": ["engine", "type", "files"],
+      "additionalProperties": false
+    },
+    "latest_importer_config": {
+      "type": "object",
+      "properties": {
+        "engine": { "$ref": "#/$defs/engine" },
+        "type": {"type":  "string", "const": "latest"},
+        "folder": {"type":  "string"},
+        "pattern": {
+          "type": "string",
+          "format": "regex"
+        },
+        "category_map": {"$ref": "#/$defs/category_map"},
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "additional_data": {"type": "object"}
+      },
+      "required": ["engine", "type", "folder", "pattern"],
+      "additionalProperties": false
+    },
+    "engine": {
+      "type": "string",
+      "enum": [
+        "cstimer",
+        "prisma",
+        "plus_timer",
+        "sct_android",
+        "fmc_file"
+      ]
+    },
+    "category_map": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}
