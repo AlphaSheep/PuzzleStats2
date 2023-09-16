@@ -10,6 +10,7 @@ from .plus_timer import PlusTimerImporter
 from .fmc_file import FMCFileImporter
 from .sct_android import SCTAndroidImporter
 from .prisma import PrismaImporter
+from .cubeast import CubeastImporter
 
 
 _Importer = TypeVar('_Importer', bound=BaseTimerImporter)
@@ -31,6 +32,8 @@ def get_importer(name: str) -> _Importer:
             return SCTAndroidImporter()
         case "fmc_file":
             return FMCFileImporter()
+        case "cubeast":
+            return CubeastImporter()
 
 
 class ImportEngine:
