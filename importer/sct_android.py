@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import List, Final, Dict, Any
 
 from importer.base_timer_importer import BaseTimerImporter
-from result import Result
+from solves import Solve
 
 
 _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
@@ -41,11 +41,11 @@ class SCTAndroidImporter(BaseTimerImporter):
 
                 result = self._interpret_solution_line(category, month, solution_line, source)
 
-                self.results.append(result)
+                self.solves.append(result)
                 self.categories.add(category)
 
     @staticmethod
-    def _interpret_solution_line(category, month, solution_line, source) -> Result:
+    def _interpret_solution_line(category, month, solution_line, source) -> Solve:
         # date = solution_line[0][5:9] + '-' + '{:02d}'.format(month) +
         # '-' + solution_line[0][2:4] + ' ' + solution_line[0][10:]
         date = f"{solution_line[0][5:9]}-{month:02d}-{solution_line[0][2:4]} {solution_line[0][10:]}"
@@ -54,4 +54,4 @@ class SCTAndroidImporter(BaseTimerImporter):
         time = (datetime.strptime(solution_line[1], '%M:%S.%f') - _ZERO_TIME)
 
         penalty = timedelta(seconds=0)
-        return Result(start, time, category, penalty, source)
+        return Solve(start, time, category, penalty, source)

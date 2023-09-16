@@ -1,18 +1,18 @@
 from datetime import datetime
 from typing import Final, List, Set
 
-from result import Result
+from solves import Solve
 
 
 DEFAULT_RESULTS_FILE: Final[str] = '../solvetimes.csv'
 
 
-def dump_results(results: List[Result],
+def dump_results(results: List[Solve],
                  filter_categories: Set[str] = None,
                  file_name: str = DEFAULT_RESULTS_FILE) -> None:
 
     with open(file_name, 'w') as file_stream:
-        result: Result
+        result: Solve
         for result in results:
             start: str = datetime.strftime(result.start, '%Y-%m-%d %H:%M:%S.%f')
             time: str = str(result.result.total_seconds())

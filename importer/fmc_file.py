@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 from typing import List
 
 from importer.base_timer_importer import BaseTimerImporter
-from result import Result
+from solves import Solve
 
 
 class FMCFileImporter(BaseTimerImporter):
@@ -30,6 +30,6 @@ class FMCFileImporter(BaseTimerImporter):
                     time = timedelta(seconds=float(solution[1]))
                     penalty = timedelta(seconds=0)
 
-                    result = Result(start, time, category, penalty, source)
-                    self.results.append(result)
+                    result = Solve(start, time, category, penalty, source)
+                    self.solves.append(result)
 

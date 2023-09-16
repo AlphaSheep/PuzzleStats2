@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 
-from result import Result
+from solves import Solve
 
 
 EXAMPLE_DATETIME = datetime(2000, 3, 2, 9, 8, 7)
@@ -20,13 +20,14 @@ class TestResult(unittest.TestCase):
         self.assertEqual(result_as_list, expected)
 
 
-def _get_a_result() -> Result:
+def _get_a_result() -> Solve:
     start = EXAMPLE_DATETIME
     time = EXAMPLE_TIMEDELTA
     category = EXAMPLE_CATEGORY
     penalty = EXAMPLE_PENALTY
     source = EXAMPLE_SOURCE
-    return Result(start, time, category, penalty, source)
+    return Solve(start, time, category, penalty, source)
+
 
 if __name__ == '__main__':
     unittest.main()

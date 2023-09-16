@@ -2,7 +2,7 @@ import json
 from typing import List, TypeVar, Union, Set, Dict, Any
 from jsonschema import validate
 
-from result import Result
+from solves import Solve, SolveCollection
 from .base_timer_importer import BaseTimerImporter
 
 from .cstimer import CSTimerImporter
@@ -76,12 +76,12 @@ class ImportEngine:
             imp.import_all()
 
     @property
-    def results(self) -> List[Result]:
-        all_results: List[Result] = []
+    def results(self) -> SolveCollection[Solve]:
+        all_solves: SolveCollection[Solve] = SolveCollection()
         imp: _Importer
         for imp in self._importers:
-            all_results += imp.results
-        return all_results
+            all_solves += imp.solves
+        return all_solves
 
     @property
     def categories(self) -> Set[str]:
