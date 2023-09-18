@@ -6,7 +6,7 @@ from re import compile, match
 
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve
+from solves import Solve, Result
 
 
 class CubeastImporter(BaseTimerImporter):
@@ -46,12 +46,12 @@ class CubeastImporter(BaseTimerImporter):
                         self.dnf_counts[category] = 1
 
                 else:
-                    result = self._solution_to_sovle(solution, source, category)
+                    result = self._solution_to_solve(solution, source, category)
                     self.solves.append(result)
 
 
     @staticmethod
-    def _solution_to_sovle(solution: Dict[str, str], source: str, category: str) -> Solve:
+    def _solution_to_solve(solution: Dict[str, str], source: str, category: str) -> Solve:
         start = datetime.strptime(solution['date'], "%Y-%m-%d %H:%M:%S %Z")
         time = timedelta(seconds=float(solution['timer_time']) / 1000)
 
@@ -62,7 +62,7 @@ class CubeastImporter(BaseTimerImporter):
             two_sec if solution['one_turn_away_two_second_penalty'] == 'true' else zero_sec + \
             two_sec if solution['inspection_two_second_penalty'] == 'true' else zero_sec
 
-        return Solve(start, time, category, penalty, source)
+        return Solve(start, Result(time), category, source)
 
 
 

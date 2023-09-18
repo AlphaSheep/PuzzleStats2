@@ -34,6 +34,18 @@
             "type": "string"
           }
         },
+        "interpret_as_movecount": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "interpret_as_multi": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "additional_data": {"type": "object"}
       },
       "required": ["engine", "type", "files"],
@@ -51,6 +63,18 @@
         },
         "category_map": {"$ref": "#/$defs/category_map"},
         "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "interpret_as_movecount": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "interpret_as_multi": {
           "type": "array",
           "items": {
             "type": "string"

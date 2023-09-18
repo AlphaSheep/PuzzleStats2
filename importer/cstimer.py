@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Tuple, Any, Dict, List, Union
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve
+from solves import Solve, Result
 
 
 _DNF_FLAG = -1
@@ -54,13 +54,29 @@ class CSTimerImporter(BaseTimerImporter):
                         result = self._interpret_single_result(category, solution, source)
                         self.solves.append(result)
 
-    @staticmethod
-    def _interpret_single_result(category, solution, source: str) -> Solve:
+    def _interpret_single_result(self, category, solution, source: str) -> Solve:
         penalty: timedelta = timedelta(seconds=solution[0][0])
-        time: timedelta = timedelta(seconds=solution[0][1] / 1000)
-        scramble: str = solution[1]
         timestamp: datetime = datetime.utcfromtimestamp(solution[3])
-        result = Solve(timestamp, time, category, penalty, source)
+
+        time: Result
+        if category in self.move_categories:
+            time = Result(int(solution[0][1] / 1000))
+        elif category in self.multi_categories:
+            comment = solution[2]
+            if not match(r'\d+/\d+', comment):
+                print(f'Warning: interpeting as a multi-solve, but comment is not in the correct format: {comment} on {timestamp}')
+                time = Result((0, 0, timedelta(seconds=solution[0][1] / 1000)))
+            else:
+                parts = comment.split('/')
+                solved = int(parts[0])
+                attempted = int(parts[1])
+                time = Result((solved, attempted, timedelta(seconds=solution[0][1] / 1000)))
+
+        else:
+            time = Result(timedelta(seconds=solution[0][1] / 1000))
+
+        scramble: str = solution[1]
+        result = Solve(timestamp, time, category, source)
         return result
 
     def _load_convert_and_dump_latest_cstimer_export(self) -> None:

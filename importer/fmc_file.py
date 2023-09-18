@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 from typing import List
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve
+from solves import Solve, Result
 
 
 class FMCFileImporter(BaseTimerImporter):
@@ -27,9 +27,9 @@ class FMCFileImporter(BaseTimerImporter):
                 csv_file = csv.reader(file_stream)
                 for solution in csv_file:
                     start = datetime.strptime(solution[0], '%Y-%m-%d')
-                    time = timedelta(seconds=float(solution[1]))
+                    time = Result(int(solution[1]))
                     penalty = timedelta(seconds=0)
 
-                    result = Solve(start, time, category, penalty, source)
+                    result = Solve(start, time, category, source)
                     self.solves.append(result)
 

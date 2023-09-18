@@ -1,9 +1,9 @@
 import csv
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Dict
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve
+from solves import Solve, Result
 
 _DNF_FLAG = 'DNF'
 
@@ -56,6 +56,6 @@ class PrismaImporter(BaseTimerImporter):
         except ValueError:
             penalty = timedelta(seconds=0)
 
-        time = (end - start) + penalty
+        time = Result((end - start) + penalty)
 
-        return Solve(start, time, category, penalty, source)
+        return Solve(start, time, category, source)

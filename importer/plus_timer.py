@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve
+from solves import Solve, Result
 
 _DNF_FLAG = 'DNF'
 
@@ -48,11 +48,11 @@ class PlusTimerImporter(BaseTimerImporter):
             # If the decimal place is .00, then it is left off during the data export, causing a format
             # mismatch, so we try converting again, but without the decimal.
             start = datetime.strptime(solution[1], '%Y-%m-%d %H:%M:%S')
-        time = timedelta(seconds=float(solution[2]))
+        time = Result(timedelta(seconds=float(solution[2])))
 
         try:
             penalty = timedelta(seconds=float(solution[3]))
         except ValueError:
             penalty = timedelta(seconds=0)
 
-        return Solve(start, time, category, penalty, source)
+        return Solve(start, time, category, source)
