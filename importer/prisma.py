@@ -13,6 +13,7 @@ class PrismaImporter(BaseTimerImporter):
     def __init__(self):
         super().__init__()
         self.files: List[str] = []
+        self.category_config: Dict[str, str] = {}
 
     def import_all(self) -> None:
         self.reset()
@@ -30,6 +31,9 @@ class PrismaImporter(BaseTimerImporter):
                     continue  # Skip header line
 
                 category = solution[10].strip()
+                if category in self.category_config.keys():
+                    category = self.category_config[category]
+
                 self.categories.add(category)
 
                 if solution[6] == _DNF_FLAG:
