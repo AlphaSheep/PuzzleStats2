@@ -5,12 +5,12 @@ from jsonschema import validate
 from solves import SolveCollection
 from .base_timer_importer import BaseTimerImporter
 
-from .cstimer import CSTimerImporter
-from .plus_timer import PlusTimerImporter
-from .fmc_file import FMCFileImporter
-from .sct_android import SCTAndroidImporter
-from .prisma import PrismaImporter
-from .cubeast import CubeastImporter
+from .external.cstimer import CSTimerImporter
+from .external.plus_timer import PlusTimerImporter
+from .external.fmc_file import FMCFileImporter
+from .external.sct_android import SCTAndroidImporter
+from .external.prisma import PrismaImporter
+from .external.cubeast import CubeastImporter
 
 
 _Importer = TypeVar('_Importer', bound=BaseTimerImporter)
