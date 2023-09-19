@@ -59,6 +59,8 @@ class Result:
     def __sub__(self, other: 'Result') -> 'Result':
         if self.value is None:
             raise ValueError("Cannot subtract from a zero result")
+        elif other.value is None:
+            return Result(self.value)
         elif isinstance(self.value, int) or isinstance(self.value, float):
             assert isinstance(other.value, int) or isinstance(other.value, float), "Fewest moves result can only be subtracted from another fewest moves result"
             return Result(self.value - other.value)
@@ -86,21 +88,33 @@ class Result:
             return Result(self.value / other)
 
     def __lt__(self, other: 'Result') -> bool:
+        if self.value is None or other.value is None:
+            return True
         return float(self) < float(other)
 
     def __le__(self, other: 'Result') -> bool:
+        if self.value is None or other.value is None:
+            return True
         return float(self) <= float(other)
 
-    def __eq__(self, other: 'Result') -> bool:
+    def __eq__(self, other) -> bool:
+        if self.value is None and other.value is None:
+            return True
         return float(self) == float(other)
 
-    def __ne__(self, other: 'Result') -> bool:
+    def __ne__(self, other) -> bool:
+        if self.value is None and other.value is None:
+            return False
         return float(self) != float(other)
 
     def __gt__(self, other: 'Result') -> bool:
+        if self.value is None or other.value is None:
+            return True
         return float(self) > float(other)
 
     def __ge__(self, other: 'Result') -> bool:
+        if self.value is None or other.value is None:
+            return True
         return float(self) >= float(other)
 
     def __repr__(self) -> str:
