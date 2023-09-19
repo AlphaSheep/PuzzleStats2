@@ -10,7 +10,7 @@ _DNF_FLAG = 'DNF'
 
 class PlusTimerImporter(BaseTimerImporter):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.files: List[str] = []
         self.category_config: Dict[str, str] = {}

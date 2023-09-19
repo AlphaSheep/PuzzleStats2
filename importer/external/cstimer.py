@@ -13,7 +13,7 @@ _DNF_FLAG = -1
 
 class CSTimerImporter(BaseTimerImporter):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.folder: str = ""
         self.pattern: str = ""

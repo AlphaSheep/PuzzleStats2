@@ -11,7 +11,7 @@ _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
 
 class SCTAndroidImporter(BaseTimerImporter):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.files: List[str] = []
         self.category_config: List[str] = []
