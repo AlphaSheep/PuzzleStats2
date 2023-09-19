@@ -1,4 +1,4 @@
-from typing import List, Union, Dict, Optional, Tuple, Final
+from typing import List, Union, Dict, Optional, Tuple, Final, Iterable, Generator, Callable, Any
 
 from datetime import datetime, timedelta
 from pandas import DataFrame, Series
@@ -152,10 +152,71 @@ class Solve:
         }
 
 
-class SolveCollection(list):
+class SolveCollection():
+
+    def __init__(self, solves: Iterable[Solve] = []) -> None:
+        self.solves: List[Solve] = list(solves)
 
     def as_dataframe(self) -> DataFrame:
-        return DataFrame([solve.as_dict() for solve in self])
+        return DataFrame([solve.as_dict() for solve in self.solves])
 
     def as_timeseries(self) -> Series:
-        return Series({solve.start: solve.result for solve in self})
+        return Series({solve.start: solve.result for solve in self.solves})
+
+    def append(self, solve: Solve) -> None:
+        self.solves.append(solve)
+
+    def filter(self, filter: Iterable[bool]) -> 'SolveCollection':
+        return SolveCollection([solve for solve, flag in zip(self.solves, filter) if flag])
+
+    def sort(self, key: Callable[[Solve], Any] = lambda solve: solve.start) -> None:
+        self.solves.sort(key=key)
+
+    def __next__(self) -> Generator[Solve, None, None]:
+        for solve in self.solves:
+            yield solve
+
+    def __iter__(self) -> Generator[Solve, None, None]:
+        for solve in self.solves:
+            yield solve
+
+    def __len__(self) -> int:
+        return len(self.solves)
+
+    def __getitem__(self, key: int) -> Solve:
+        return self.solves[key]
+
+    def __setitem__(self, key: int, value: Solve) -> None:
+        self.solves[key] = value
+
+    def __delitem__(self, key: int) -> None:
+        del self.solves[key]
+
+    def __add__(self, other: 'SolveCollection') -> 'SolveCollection':
+        return SolveCollection(self.solves + other.solves)
+
+    def __repr__(self) -> str:
+        if len(self.solves) == 0:
+            return "SolveCollection()"
+        elif len(self.solves) < 10:
+            return f"SolveCollection(\n{self.solves}\n)"
+        else:
+            return f"SolveCollection(\n{self.solves[0]}\n{self.solves[1]}\n{self.solves[2]}\n...\n{self.solves[-3]}\n{self.solves[-2]}\n{self.solves[-1]}\n)"
+
+    @property
+    def category(self) -> List[str]:
+        return [s.category for s in self.solves]
+
+    @property
+    def start(self) -> List[datetime]:
+        return [s.start for s in self.solves]
+
+    @property
+    def result(self) -> List[Result]:
+        return [s.result for s in self.solves]
+
+    @property
+    def source(self) -> List[str]:
+        return [s.source for s in self.solves]
+
+
