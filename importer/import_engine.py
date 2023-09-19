@@ -13,11 +13,8 @@ from .external.prisma import PrismaImporter
 from .external.cubeast import CubeastImporter
 
 
-_Importer = TypeVar('_Importer', bound=BaseTimerImporter)
-
-
 _DEFAULT_CONFIG_FILE = "import_config.json"
-_CONFIG_SCHEMA_FILE = "importer/config_schema.json"
+_CONFIG_SCHEMA_FILE = "importer/import_config_schema.json"
 
 
 def get_importer(name: str) -> BaseTimerImporter:
@@ -39,7 +36,7 @@ def get_importer(name: str) -> BaseTimerImporter:
 
 
 class ImportEngine:
-    def __init__(self):
+    def __init__(self) -> None:
         self._importers: List[BaseTimerImporter] = []
 
     def load_configurations(self, config_file: str = _DEFAULT_CONFIG_FILE) -> None:
