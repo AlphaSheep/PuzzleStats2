@@ -16,7 +16,7 @@ class TestResult(unittest.TestCase):
         result = _get_a_result()
         result_as_list = result.as_list()
 
-        expected = [EXAMPLE_DATETIME, EXAMPLE_RESULT, EXAMPLE_CATEGORY, EXAMPLE_PENALTY, EXAMPLE_SOURCE]
+        expected = [EXAMPLE_DATETIME, EXAMPLE_RESULT, EXAMPLE_CATEGORY, EXAMPLE_SOURCE]
         self.assertEqual(result_as_list, expected)
 
 
@@ -26,7 +26,7 @@ def _get_a_result() -> Solve:
     category = EXAMPLE_CATEGORY
     penalty = EXAMPLE_PENALTY
     source = EXAMPLE_SOURCE
-    return Solve(start, time, category, source, penalty)
+    return Solve(start, time, category, source)
 
 
 if __name__ == '__main__':
