@@ -25,9 +25,19 @@ class FMCFileImporter(BaseTimerImporter):
 
             with open(source_file_name) as file_stream:
                 csv_file = csv.reader(file_stream)
+
+                seen_dates = set()
+
                 for solution in csv_file:
                     start = datetime.strptime(solution[0], '%Y-%m-%d')
+                    while start in seen_dates:
+                        # Handle multiple attempts on the same day
+                        start += timedelta(minutes=1)
+
+                    seen_dates.add(start)
+
                     time = Result(int(solution[1]))
+
                     penalty = timedelta(seconds=0)
 
                     result = Statistic(start, time, category, source)
