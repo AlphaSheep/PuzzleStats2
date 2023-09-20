@@ -69,16 +69,19 @@ def get_official_results(wca_id: str) -> Tuple[StatisticCollection, StatisticCol
         for event_id, event_results in comp_results.items():
             for round in event_results:
 
-                average_raw = round['average']
-                if average_raw > 0:
-                    average = _average_to_result(average_raw, event_id)
-                    averages.append(Solve(comp_date, average, event_id, 'WCA Average'))
-
                 for solve in round['solves']:
                     if solve <= 0:
                         continue
 
+                    comp_date += timedelta(minutes=1)
                     result = _single_to_result(solve, event_id)
-                    singles.append(Solve(comp_date, result, event_id, 'WCA Single'))
+                    singles.append(Statistic(comp_date, result, event_id, 'WCA Single'))
+
+
+                average_raw = round['average']
+                if average_raw > 0:
+                    average = _average_to_result(average_raw, event_id)
+                    averages.append(Statistic(comp_date, average, event_id, 'WCA Average'))
+
 
     return singles, averages
