@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve, Result
+from solves import Statistic, Result
 
 _DNF_FLAG = 'DNF'
 
@@ -41,7 +41,7 @@ class PlusTimerImporter(BaseTimerImporter):
                     self.solves.append(result)
 
     @staticmethod
-    def _interpret_solution_line(solution, source, category) -> Solve:
+    def _interpret_solution_line(solution, source, category) -> Statistic:
         try:
             start = datetime.strptime(solution[1], '%Y-%m-%d %H:%M:%S.%f')
         except ValueError:
@@ -55,4 +55,4 @@ class PlusTimerImporter(BaseTimerImporter):
         except ValueError:
             penalty = timedelta(seconds=0)
 
-        return Solve(start, time, category, source)
+        return Statistic(start, time, category, source)

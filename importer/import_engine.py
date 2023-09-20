@@ -2,7 +2,7 @@ import json
 from typing import List, TypeVar, Union, Set, Dict, Any, cast
 from jsonschema import validate
 
-from solves import SolveCollection
+from solves import StatisticCollection
 from .base_timer_importer import BaseTimerImporter
 
 from .external.cstimer import CSTimerImporter
@@ -82,8 +82,8 @@ class ImportEngine:
             imp.import_all()
 
     @property
-    def results(self) -> SolveCollection:
-        all_solves: SolveCollection = SolveCollection()
+    def results(self) -> StatisticCollection:
+        all_solves: StatisticCollection = StatisticCollection()
         imp: BaseTimerImporter
         for imp in self._importers:
             all_solves += imp.solves

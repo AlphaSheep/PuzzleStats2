@@ -4,7 +4,7 @@ import requests
 from functools import cache
 from datetime import datetime, timedelta
 
-from solves import Solve, SolveCollection, Result
+from solves import Statistic, StatisticCollection, Result
 
 
 # Uses the Unofficial WCA API: https://wca-rest-api.robiningelbrecht.be/
@@ -58,10 +58,11 @@ def _single_to_result(single_raw: int, event_id: str) -> Result:
     return result
 
 
-def get_official_results(wca_id: str) -> Tuple[SolveCollection, SolveCollection]:
+@cache
+def get_official_results(wca_id: str) -> Tuple[StatisticCollection, StatisticCollection]:
     results = _fetch_raw_results_for_person(wca_id)
-    singles: SolveCollection = SolveCollection()
-    averages: SolveCollection = SolveCollection()
+    singles: StatisticCollection = StatisticCollection()
+    averages: StatisticCollection = StatisticCollection()
 
     for comp_id, comp_results in results.items():
         comp_date = _fetch_competition_date(comp_id)

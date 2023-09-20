@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Tuple, Any, Dict, List, Union
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve, Result
+from solves import Statistic, Result
 
 
 _DNF_FLAG = -1
@@ -54,7 +54,7 @@ class CSTimerImporter(BaseTimerImporter):
                         result = self._interpret_single_result(category, solution, source)
                         self.solves.append(result)
 
-    def _interpret_single_result(self, category, solution, source: str) -> Solve:
+    def _interpret_single_result(self, category, solution, source: str) -> Statistic:
         penalty: timedelta = timedelta(seconds=solution[0][0])
         timestamp: datetime = datetime.utcfromtimestamp(solution[3])
 
@@ -76,7 +76,7 @@ class CSTimerImporter(BaseTimerImporter):
             time = Result(timedelta(seconds=solution[0][1] / 1000))
 
         scramble: str = solution[1]
-        result = Solve(timestamp, time, category, source)
+        result = Statistic(timestamp, time, category, source)
         return result
 
     def _load_convert_and_dump_latest_cstimer_export(self) -> None:

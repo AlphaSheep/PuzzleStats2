@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Set, Union, Any
 
-from solves import Solve, SolveCollection
+from solves import Statistic, StatisticCollection
 
 
 class BaseTimerImporter(ABC):
 
     def __init__(self) -> None:
-        self.solves: SolveCollection = SolveCollection()
+        self.solves: StatisticCollection = StatisticCollection()
         self.categories: Set[str] = set()
         self.dnf_counts: Dict[str, int] = {}
 
@@ -22,7 +22,7 @@ class BaseTimerImporter(ABC):
         self.files: List[str] = []
 
     def reset(self) -> None:
-        self.solves = SolveCollection()
+        self.solves = StatisticCollection()
         self.categories = set()
         self.dnf_counts = {}
 

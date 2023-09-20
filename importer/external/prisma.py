@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict
 
 from importer.base_timer_importer import BaseTimerImporter
-from solves import Solve, Result
+from solves import Statistic, Result
 
 _DNF_FLAG = 'DNF'
 
@@ -47,7 +47,7 @@ class PrismaImporter(BaseTimerImporter):
                     self.solves.append(result)
 
     @staticmethod
-    def _interpret_solution_line(solution, source, category) -> Solve:
+    def _interpret_solution_line(solution, source, category) -> Statistic:
         start = datetime.strptime(solution[4], '%Y-%m-%d %H:%M:%S.%f')
         end = datetime.strptime(solution[5], '%Y-%m-%d %H:%M:%S.%f')
 
@@ -58,4 +58,4 @@ class PrismaImporter(BaseTimerImporter):
 
         time = Result((end - start) + penalty)
 
-        return Solve(start, time, category, source)
+        return Statistic(start, time, category, source)

@@ -1,4 +1,4 @@
-from typing import List, Union, Dict, Optional, Tuple, Final, Iterable, Generator, Callable, Any
+from typing import List, Union, Dict, Set, Tuple, Final, Iterable, Generator, Callable, Any
 
 from datetime import datetime, timedelta
 from pandas import DataFrame, Series
@@ -19,6 +19,9 @@ class Result:
     def __init__(self, value: timedelta | int | float | Tuple[int, int, timedelta] | None = None) -> None:
         self.value: timedelta | int | float | Tuple[int, int, timedelta] | None = value
 
+    def has_result(self) -> bool:
+        return self.value is not None
+
     def __float__(self) -> float:
         if self.value is None:
             return float('NaN')
@@ -32,7 +35,7 @@ class Result:
             seconds = int(self.value[2].total_seconds()) * 100
             missed = attempted - solved
             difference = (99 - solved - missed) * 1000000
-            return difference + seconds + missed
+            return float(difference + seconds + missed)
         else:
             # Standard timed speedsolve
             return self.value.total_seconds()
@@ -129,71 +132,72 @@ class Result:
             return _time_to_str(self.value)
 
 
-class Solve:
+class Statistic:
+
     def __init__(self, start: datetime, result: Result, category: str, source: str) -> None:
-        self.start: datetime = start
+        self.date: datetime = start
 
         self.result: Result = result
         self.category: str = category.strip()
         self.source: str = source.strip()
 
     def __repr__(self) -> str:
-        return f"{self.category}: {self.result} . {self.start.strftime('%c')} ({self.source})"
+        return f"{self.category}: {self.result} . {self.date.strftime('%c')} ({self.source})"
 
     def as_list(self) -> List[Union[datetime, Result, str]]:
-        return [self.start, self.result, self.category, self.source]
+        return [self.date, self.result, self.category, self.source]
 
     def as_dict(self) -> Dict[str, Union[datetime, Result, timedelta, str]]:
         return {
-            "start": self.start,
+            "date": self.date,
             "result": self.result,
             "category": self.category,
             "source": self.source
         }
 
 
-class SolveCollection():
+class StatisticCollection():
 
-    def __init__(self, solves: Iterable[Solve] = []) -> None:
-        self.solves: List[Solve] = list(solves)
+    def __init__(self, solves: Iterable[Statistic] = []) -> None:
+        self.solves: List[Statistic] = list(solves)
 
     def as_dataframe(self) -> DataFrame:
         return DataFrame([solve.as_dict() for solve in self.solves])
 
     def as_timeseries(self) -> Series:
-        return Series({solve.start: solve.result for solve in self.solves})
+        return Series({solve.date: solve.result for solve in self.solves})
 
-    def append(self, solve: Solve) -> None:
+    def append(self, solve: Statistic) -> None:
         self.solves.append(solve)
 
-    def filter(self, filter: Iterable[bool]) -> 'SolveCollection':
-        return SolveCollection([solve for solve, flag in zip(self.solves, filter) if flag])
+    def filter(self, filter: Iterable[bool]) -> 'StatisticCollection':
+        return StatisticCollection([solve for solve, flag in zip(self.solves, filter) if flag])
 
-    def sort(self, key: Callable[[Solve], Any] = lambda solve: solve.start) -> None:
+    def sort(self, key: Callable[[Statistic], Any] = lambda solve: solve.date) -> None:
         self.solves.sort(key=key)
 
-    def __next__(self) -> Generator[Solve, None, None]:
+    def __next__(self) -> Generator[Statistic, None, None]:
         for solve in self.solves:
             yield solve
 
-    def __iter__(self) -> Generator[Solve, None, None]:
+    def __iter__(self) -> Generator[Statistic, None, None]:
         for solve in self.solves:
             yield solve
 
     def __len__(self) -> int:
         return len(self.solves)
 
-    def __getitem__(self, key: int) -> Solve:
+    def __getitem__(self, key: int) -> Statistic:
         return self.solves[key]
 
-    def __setitem__(self, key: int, value: Solve) -> None:
+    def __setitem__(self, key: int, value: Statistic) -> None:
         self.solves[key] = value
 
     def __delitem__(self, key: int) -> None:
         del self.solves[key]
 
-    def __add__(self, other: 'SolveCollection') -> 'SolveCollection':
-        return SolveCollection(self.solves + other.solves)
+    def __add__(self, other: 'StatisticCollection') -> 'StatisticCollection':
+        return StatisticCollection(self.solves + other.solves)
 
     def __repr__(self) -> str:
         if len(self.solves) == 0:
@@ -208,8 +212,8 @@ class SolveCollection():
         return [s.category for s in self.solves]
 
     @property
-    def start(self) -> List[datetime]:
-        return [s.start for s in self.solves]
+    def date(self) -> List[datetime]:
+        return [s.date for s in self.solves]
 
     @property
     def result(self) -> List[Result]:
@@ -218,5 +222,8 @@ class SolveCollection():
     @property
     def source(self) -> List[str]:
         return [s.source for s in self.solves]
+
+    def get_distinct_categories(self) -> Set[str]:
+        return set(self.category)
 
 
