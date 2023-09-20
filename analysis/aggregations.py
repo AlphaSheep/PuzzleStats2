@@ -133,13 +133,3 @@ class MovingAverageWindow(BaseMovingWindow):
         else:
             return Result(None)
 
-
-def sumt(times: List[Result]) -> Result:
-    total = Result()
-    for t in times:
-        total += t
-    return total
-
-
-def average_excl_max_and_min(times: List[Result]) -> Result:
-    return (sumt(times) - max(times) - min(times)) / (len(times) - 2)
