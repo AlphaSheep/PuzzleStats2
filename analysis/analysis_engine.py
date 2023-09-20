@@ -1,4 +1,4 @@
-from typing import Final, List, Dict, Any, Callable
+from typing import Final, List, Dict, Any, Callable, Set
 
 import json
 from jsonschema import validate
@@ -91,6 +91,9 @@ class AnalysisEngine():
                     if mean.has_result()
                 ])
 
+    def get_categories(self) -> Set[str]:
+        return self.solves.get_distinct_categories()
+
     def get_dataframe(self, selected_category: str) -> DataFrame:
         solves = self.solves.filter([category == selected_category for category in self.solves.category])
         df = DataFrame({'single': solves.as_timeseries()})
@@ -109,6 +112,8 @@ class AnalysisEngine():
             df[key] = stats.as_timeseries()
 
         df.sort_index(inplace=True)
+
+        df.insert(0, 'category', selected_category)
 
         return df
 
