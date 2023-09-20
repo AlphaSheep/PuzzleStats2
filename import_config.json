@@ -1,0 +1,109 @@
+{
+  "imports": [
+    {
+      "engine": "cstimer",
+      "type": "latest",
+      "folder": "../Databases/",
+      "pattern": "^cstimer_",
+      "category_map": {
+        "3x3x3 Cube": "333",
+        "2x2x2": "222",
+        "4x4x4": "444",
+        "5x5x5": "555",
+        "6x6x6": "666",
+        "7x7x7": "777",
+        "Skewb": "skewb",
+        "Pyraminx": "pyra",
+        "Megaminx": "mega",
+        "Square-1": "sq1",
+        "FTO": "FTO",
+        "3x3 Blindfolded": "333bf",
+        "Clock": "clock",
+        "ZZ One handed": "333oh",
+        "Roux Practice": "Roux Practice",
+        "333fm-FMC": "333fm",
+        "Multi": "Multi"
+      },
+      "interpret_as_movecount": ["333fm"],
+      "interpret_as_multi": ["333mbf"]
+    },
+    {
+      "engine": "prisma",
+      "type": "files",
+      "files": [
+        "../CSVDumps/Prisma_Titan.csv",
+        "../CSVDumps/Prisma_Iapetus.csv",
+        "../CSVDumps/Prisma_Encaladus.csv"
+      ],
+      "category_map": {
+        "Rubik's cube": "333",
+        "Rubik's cube one-handed": "333oh",
+        "Rubik's cube with feet": "333ft",
+        "Rubik's cube blindfolded": "333bf",
+        "2x2x2 cube": "222",
+        "4x4x4 cube": "444",
+        "5x5x5 cube": "555",
+        "6x6x6 cube": "666",
+        "7x7x7 cube": "777",
+        "Megaminx": "mega",
+        "Pyraminx": "pyra",
+        "Square-1": "sq1",
+        "Skewb": "skewb",
+        "Rubik's clock": "clock"
+      }
+    },
+    {
+      "engine": "plus_timer",
+      "type": "files",
+      "files": ["../CSVDumps/PlusTimerResults.csv"],
+      "category_map": {
+        "3x3": "333",
+        "3x3-OH": "333oh",
+        "3x3-Feet": "333ft",
+        "4x4": "444",
+        "5x5": "555",
+        "6x6": "666",
+        "7x7": "777",
+        "Pyraminx": "pyra",
+        "Megaminx": "mega",
+        "Skewb": "skewb",
+        "3x3-BLD": "333bf",
+        "Square-1": "sq1",
+        "Clock": "clock"
+      }
+    },
+    {
+      "engine": "sct_android",
+      "type": "files",
+      "files": [
+        "../CSVDumps/3 x 3 x 3 Cube - S 11, 2014 - 09.22.25 PM.csv",
+        "../CSVDumps/2 x 2 x 2 Cube - A 01, 2014 - 11.53.51 AM.csv"
+      ],
+      "categories": [
+        "333",
+        "222"
+      ],
+      "additional_data": {
+        "start_months": [9, 8]
+      }
+    },
+    {
+      "engine": "fmc_file",
+      "type": "files",
+      "files": ["../CSVDumps/FMCResults.csv"],
+      "categories": ["333fm"]
+    },
+    {
+      "engine": "cubeast",
+      "type": "latest",
+      "folder": "../Databases/",
+      "pattern": "^cubeast_",
+      "category_map": {
+        "3x3x3": "333",
+        "Speedsolving": "333",
+        "Roux": "Roux Practice",
+        "One handed": "333oh"
+      }
+    }
+  ]
+}

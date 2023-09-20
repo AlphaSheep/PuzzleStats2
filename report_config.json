@@ -1,0 +1,9 @@
+{
+  "reporters": [
+    {
+      "engine": "csv",
+      "type": "file",
+      "output_file": "report.csv"
+    }
+  ]
+}
