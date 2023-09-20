@@ -8,7 +8,8 @@ __pycache__/
 
 pip-log.txt
 
-/import_config.json
+import_config.json
+analysis_config.json
 
 # Project files
 /.coverage

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+
+  "properties": {
+
+    "means": {
+      "type": "array",
+      "items":{
+        "type": "integer"
+      }
+    },
+
+    "averages": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+
+    "wca": { "$ref": "#/$defs/wca_config" }
+  },
+
+  "additionalProperties": false,
+  "required": [
+    "means",
+    "averages"
+  ],
+
+
+  "$defs": {
+
+    "wca_config": {
+      "type": "object",
+      "properties": {
+        "include": {
+          "type": "boolean"
+        },
+        "wca_id": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false,
+      "required": [
+        "include"
+      ]
+    }
+
+  }
+}
+
