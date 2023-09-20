@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+
+    "reporters": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          { "$ref": "#/definitions/file_reporter" },
+          { "$ref": "#/definitions/folder_reporter" }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "reporters"
+  ],
+  "definitions": {
+
+    "file_reporter": {
+      "type": "object",
+      "properties": {
+        "engine": { "$ref": "#/definitions/file_engine" },
+        "type": {"type":  "string", "const": "file"},
+        "output_file": { "type":  "string" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "engine",
+        "type",
+        "output_file"
+      ]
+    },
+
+    "folder_reporter": {
+      "type": "object",
+      "properties": {
+        "engine": { "$ref": "#/definitions/folder_engine" },
+        "type": {"type":  "string", "const": "folder"},
+        "output_folder": { "type":  "string" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "engine",
+        "type",
+        "output_folder"
+      ]
+    },
+
+    "file_engine": {
+      "type": "string",
+      "enum": [
+        "csv",
+        "json"
+      ]
+    },
+
+    "folder_engine": {
+      "type": "string",
+      "enum": [
+        "html"
+      ]
+    }
+
+  }
+}
+
+
