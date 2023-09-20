@@ -1,5 +1,6 @@
+from typing import List, Union, Set, Dict, Any
+
 import json
-from typing import List, TypeVar, Union, Set, Dict, Any, cast
 from jsonschema import validate
 
 from solves import StatisticCollection
