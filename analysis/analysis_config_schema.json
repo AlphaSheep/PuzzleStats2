@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
 
   "properties": {
@@ -18,7 +18,7 @@
       }
     },
 
-    "wca": { "$ref": "#/$defs/wca_config" }
+    "wca": { "$ref": "#/definitions/wca_config" }
   },
 
   "additionalProperties": false,
@@ -28,7 +28,7 @@
   ],
 
 
-  "$defs": {
+  "definitions": {
 
     "wca_config": {
       "type": "object",

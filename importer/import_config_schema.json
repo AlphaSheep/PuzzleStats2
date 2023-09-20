@@ -1,26 +1,30 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
+
   "properties": {
     "imports": {
       "type": "array",
       "items": {
         "anyOf": [
-          { "$ref": "#/$defs/files_importer_config" },
-          { "$ref": "#/$defs/latest_importer_config" }
+          { "$ref": "#/definitions/files_importer_config" },
+          { "$ref": "#/definitions/latest_importer_config" }
         ]
       }
     }
   },
+
   "additionalProperties": false,
   "required": [
     "imports"
   ],
-  "$defs": {
+
+  "definitions": {
+
     "files_importer_config": {
       "type": "object",
       "properties": {
-        "engine": {"$ref": "#/$defs/engine"},
+        "engine": {"$ref": "#/definitions/engine"},
         "type": {"type":  "string", "const": "files"},
         "files": {
           "type": "array",
@@ -28,7 +32,7 @@
             "type": "string"
           }
         },
-        "category_map": {"$ref": "#/$defs/category_map"},
+        "category_map": {"$ref": "#/definitions/category_map"},
         "categories": {
           "type": "array",
           "items": {
@@ -52,17 +56,18 @@
       "required": ["engine", "type", "files"],
       "additionalProperties": false
     },
+
     "latest_importer_config": {
       "type": "object",
       "properties": {
-        "engine": { "$ref": "#/$defs/engine" },
+        "engine": { "$ref": "#/definitions/engine" },
         "type": {"type":  "string", "const": "latest"},
         "folder": {"type":  "string"},
         "pattern": {
           "type": "string",
           "format": "regex"
         },
-        "category_map": {"$ref": "#/$defs/category_map"},
+        "category_map": {"$ref": "#/definitions/category_map"},
         "categories": {
           "type": "array",
           "items": {
@@ -86,6 +91,7 @@
       "required": ["engine", "type", "folder", "pattern"],
       "additionalProperties": false
     },
+
     "engine": {
       "type": "string",
       "enum": [
@@ -97,6 +103,7 @@
         "cubeast"
       ]
     },
+
     "category_map": {
       "type": "object",
       "patternProperties": {
@@ -104,5 +111,6 @@
       },
       "additionalProperties": false
     }
+
   }
 }
