@@ -1,7 +1,6 @@
 .directory
 .idea/
 
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -10,3 +9,8 @@ __pycache__/
 pip-log.txt
 
 /import_config.json
+
+# Project files
+/.coverage
+/htmlcov/
+lcov.info
