@@ -17,8 +17,6 @@ if __name__ == "__main__":
     print(f"  First solve: {min(t.date for t in solves).strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  Last solve: {max(t.date for t in solves).strftime('%Y-%m-%d %H:%M:%S')}")
 
-    solves.sort()
-
     start = time()
     analysis = AnalysisEngine()
     analysis.load_configurations()
