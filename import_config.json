@@ -13,8 +13,8 @@
         "6x6x6": "666",
         "7x7x7": "777",
         "Skewb": "skewb",
-        "Pyraminx": "pyra",
-        "Megaminx": "mega",
+        "Pyraminx": "pyram",
+        "Megaminx": "minx",
         "Square-1": "sq1",
         "FTO": "FTO",
         "3x3 Blindfolded": "333bf",
@@ -22,7 +22,7 @@
         "ZZ One handed": "333oh",
         "Roux Practice": "Roux Practice",
         "333fm-FMC": "333fm",
-        "Multi": "Multi"
+        "Multi": "333mbf"
       },
       "interpret_as_movecount": ["333fm"],
       "interpret_as_multi": ["333mbf"]
@@ -45,8 +45,8 @@
         "5x5x5 cube": "555",
         "6x6x6 cube": "666",
         "7x7x7 cube": "777",
-        "Megaminx": "mega",
-        "Pyraminx": "pyra",
+        "Megaminx": "minx",
+        "Pyraminx": "pyram",
         "Square-1": "sq1",
         "Skewb": "skewb",
         "Rubik's clock": "clock"
@@ -64,8 +64,8 @@
         "5x5": "555",
         "6x6": "666",
         "7x7": "777",
-        "Pyraminx": "pyra",
-        "Megaminx": "mega",
+        "Pyraminx": "pyram",
+        "Megaminx": "minx",
         "Skewb": "skewb",
         "3x3-BLD": "333bf",
         "Square-1": "sq1",
