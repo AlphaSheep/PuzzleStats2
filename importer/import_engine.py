@@ -88,6 +88,7 @@ class ImportEngine:
         imp: BaseTimerImporter
         for imp in self._importers:
             all_solves += imp.solves
+        all_solves.sort()
         return all_solves
 
     @property
