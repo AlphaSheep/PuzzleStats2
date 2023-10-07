@@ -108,6 +108,9 @@ class Result:
             return True
         return float(self) == float(other)
 
+    def __hash__(self) -> int:
+        return hash(float(self))
+
     def __ne__(self, other) -> bool:
         if self.value is None or (hasattr(other, 'value') and other.value is None):
             return False
@@ -128,6 +131,17 @@ class Result:
             return "No result"
         elif isinstance(self.value, int) or isinstance(self.value, float):
             return f"{self.value} moves"
+        elif isinstance(self.value, tuple):
+            time = _time_to_str(self.value[2])
+            return f"{self.value[0]}/{self.value[1]} in {time}"
+        else:
+            return _time_to_str(self.value)
+
+    def __str__(self) -> str:
+        if self.value is None:
+            return ""
+        elif isinstance(self.value, int) or isinstance(self.value, float):
+            return f"{self.value}"
         elif isinstance(self.value, tuple):
             time = _time_to_str(self.value[2])
             return f"{self.value[0]}/{self.value[1]} in {time}"
@@ -165,8 +179,16 @@ class Statistic:
 
 class StatisticCollection():
 
-    def __init__(self, solves: Iterable[Statistic] = []) -> None:
+    def __init__(self, solves: Optional[Iterable[Statistic]] = None) -> None:
+        if solves is None:
+            solves = []
         self.solves: List[Statistic] = list(solves)
+
+    @staticmethod
+    def from_dataframe(df: DataFrame) -> 'StatisticCollection':
+        return StatisticCollection([
+            Statistic.from_series(row) for _, row in df.iterrows()
+        ])
 
     def as_dataframe(self) -> DataFrame:
         return DataFrame([solve.as_dict() for solve in self.solves])

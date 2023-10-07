@@ -2,7 +2,8 @@ from typing import Final, List, Dict, Any, Callable, Set
 
 import json
 from jsonschema import validate
-from pandas import DataFrame
+from datetime import datetime
+from pandas import DataFrame, concat
 
 from solves import StatisticCollection, Statistic, Category
 from wca import get_official_results
@@ -30,7 +31,7 @@ class AnalysisEngine():
         self.wca_averages: StatisticCollection = StatisticCollection()
 
     def load_configurations(self, config_file: str = _DEFAULT_CONFIG_FILE) -> None:
-        with open(config_file) as file_stream:
+        with open(config_file, encoding="utf-8") as file_stream:
             config = json.load(file_stream)
         _validate_config(config)
 
@@ -73,11 +74,22 @@ class AnalysisEngine():
                 self.statistics[event] = {}
 
             dates = theseSolves.date
-            sources = [f"Analysis Engine" for _ in theseSolves.source]
+            sources = ["Analysis Engine" for _ in theseSolves.source]
 
             for mean_of_size in config:
                 if len(theseSolves) < mean_of_size:
                     continue
+                mean_key = Aggregation(f"{keyPrefix}{mean_of_size}")
+                means = _calculate_single_statistic(
+                    theseSolves,
+                    mean_of_size,
+                    mean_key,
+                    Window,
+                    dates,
+                    sources
+                )
+
+                self.statistics[event][mean_key] = simplify(means)
 
     def get_categories(self) -> Set[Category]:
         categories = self.solves.get_distinct_categories()
@@ -86,21 +98,10 @@ class AnalysisEngine():
             categories = categories.union(self.wca_averages.get_distinct_categories())
         return categories
 
-                mean_key = f"{keyPrefix}{mean_of_size}"
-
-                calculator = Window(mean_of_size)
-
-                means = calculator.calculate(theseSolves.result)
-                categories = [f"{category} {mean_key}" for category in theseSolves.category]
-
-                self.statistics[event][mean_key] = StatisticCollection([
-                    Statistic(date, mean, category, source) \
-                    for date, mean, category, source in zip(dates, means, categories, sources) \
-                    if mean.has_result()
-                ])
-    def get_dataframe(self, selected_category: str) -> DataFrame:
+    def get_dataframe_for_category(self, selected_category: str) -> DataFrame:
         solves = self.solves.filter([category == selected_category for category in self.solves.category])
         df = DataFrame({'single': solves.as_timeseries()})
+        df.index.name = 'timestamp'
 
         if self.include_wca:
             singles = self.wca_singles.filter([category == selected_category for category in self.wca_singles.category])
@@ -118,11 +119,40 @@ class AnalysisEngine():
         df.sort_index(inplace=True)
 
         df.insert(0, 'category', selected_category)
+        df.set_index('category', append=True, inplace=True)
 
         return df
 
+    def get_dataframe(self) -> DataFrame:
+        df: DataFrame = DataFrame()
+        for category in self.get_categories():
+            df = concat([df, self.get_dataframe_for_category(category)], axis=0)
+        return df
+
+
 
 def _validate_config(config: Dict[str, Any]):
-    with open(_CONFIG_SCHEMA_FILE) as file_stream:
+    with open(_CONFIG_SCHEMA_FILE, encoding="utf-8") as file_stream:
         schema = json.load(file_stream)
     validate(instance=config, schema=schema)
+
+
+def _calculate_single_statistic(
+        solves: StatisticCollection,
+        mean_of_size: int,
+        mean_key: str,
+        Window: Callable[[int], BaseMovingWindow],
+        dates: List[datetime],
+        sources: List[str]
+    ):
+
+    calculator = Window(mean_of_size)
+
+    means = calculator.calculate(solves.result)
+    categories = [Category(f"{category} {mean_key}") for category in solves.category]
+
+    return StatisticCollection([
+        Statistic(date, mean, category, source) \
+        for date, mean, category, source in zip(dates, means, categories, sources) \
+        if mean.has_result()
+    ])
