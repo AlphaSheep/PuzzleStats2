@@ -3,7 +3,7 @@ import unittest
 from datetime import datetime, timedelta
 from math import isnan
 
-from solves import Statistic, StatisticCollection, Result
+from solves import Statistic, StatisticCollection, Result, _time_to_str
 
 
 EXAMPLE_DATETIME = datetime(2000, 3, 2, 9, 8, 7)
@@ -156,6 +156,25 @@ class TestResult(unittest.TestCase):
         self.assertTrue(Result(None) != Result(2))
         self.assertTrue(Result(2) != Result(None))
         self.assertFalse(Result(None) != Result(None))
+
+
+
+
+class TestTimeToStr(unittest.TestCase):
+    def test_time_to_str(self):
+        t = timedelta(seconds=1.234)
+        self.assertEqual('1.234', _time_to_str(t))
+        self.assertEqual('1.23', _time_to_str(t, decimals=2))
+
+        t = timedelta(seconds=61.234)
+        self.assertEqual('1:01.234', _time_to_str(t))
+        self.assertEqual('1:01.23', _time_to_str(t, decimals=2))
+
+        t = timedelta(seconds=601.234)
+        self.assertEqual('10:01.234', _time_to_str(t))
+        self.assertEqual('10:01.23', _time_to_str(t, decimals=2))
+
+
 
 
 class TestStatistic(unittest.TestCase):
