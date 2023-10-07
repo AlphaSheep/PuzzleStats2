@@ -53,6 +53,7 @@
       "type": "string",
       "enum": [
         "csv",
+        "pb_summary_csv",
         "json"
       ]
     },
@@ -60,6 +61,7 @@
     "folder_engine": {
       "type": "string",
       "enum": [
+        "plot_data_csv",
         "html"
       ]
     }

@@ -6,7 +6,7 @@ from jsonschema import validate
 from analysis import AnalysisEngine
 
 from .base_reporter import BaseReporter
-from .reporters import CSVReporter
+from .reporters import CSVReporter, PBSummaryCSVReporter, JSONReporter, PlotDataCSVReporter
 
 
 _DEFAULT_CONFIG_FILE = "report_config.json"
@@ -17,8 +17,13 @@ def get_reporter(name: str) -> BaseReporter:
     match name:
         case "csv":
             return CSVReporter()
-        case _:
-            raise ValueError(f"Unknown reporter name: {name}")
+        case "pb_summary_csv":
+            return PBSummaryCSVReporter()
+        case "json":
+            return JSONReporter()
+        case "plot_data_csv":
+            return PlotDataCSVReporter()
+    raise ValueError(f"Unknown reporter name: {name}")
 
 
 class ReportEngine:

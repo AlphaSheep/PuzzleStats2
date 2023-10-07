@@ -15,5 +15,5 @@ class BaseReporter(ABC):
         self.analysis = analysis
 
     @abstractmethod
-    def generate(self):
+    def generate(self) -> None:
         raise NotImplementedError

@@ -4,6 +4,21 @@
       "engine": "csv",
       "type": "file",
       "output_file": "report.csv"
+    },
+    {
+      "engine": "pb_summary_csv",
+      "type": "file",
+      "output_file": "report_summary.csv"
+    },
+    {
+      "engine": "json",
+      "type": "file",
+      "output_file": "report.json"
+    },
+    {
+      "engine": "plot_data_csv",
+      "type": "folder",
+      "output_folder": "plot_data"
     }
   ]
 }
