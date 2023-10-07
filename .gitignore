@@ -12,3 +12,7 @@ pip-log.txt
 /.coverage
 /htmlcov/
 lcov.info
+plot_data/
+report.csv
+report.json
+report_summary.csv
