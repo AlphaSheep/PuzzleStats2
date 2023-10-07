@@ -91,32 +91,32 @@ class Result:
             return Result(self.value / other)
 
     def __lt__(self, other: 'Result') -> bool:
-        if self.value is None or other.value is None:
+        if self.value is None or (hasattr(other, 'value') and other.value is None):
             return True
         return float(self) < float(other)
 
-    def __le__(self, other: 'Result') -> bool:
-        if self.value is None or other.value is None:
+    def __le__(self, other) -> bool:
+        if self.value is None or (hasattr(other, 'value') and other.value is None):
             return True
         return float(self) <= float(other)
 
     def __eq__(self, other) -> bool:
-        if self.value is None and other.value is None:
+        if self.value is None or (hasattr(other, 'value') and other.value is None):
             return True
         return float(self) == float(other)
 
     def __ne__(self, other) -> bool:
-        if self.value is None and other.value is None:
+        if self.value is None or (hasattr(other, 'value') and other.value is None):
             return False
         return float(self) != float(other)
 
-    def __gt__(self, other: 'Result') -> bool:
-        if self.value is None or other.value is None:
+    def __gt__(self, other) -> bool:
+        if self.value is None or (hasattr(other, 'value') and other.value is None):
             return True
         return float(self) > float(other)
 
-    def __ge__(self, other: 'Result') -> bool:
-        if self.value is None or other.value is None:
+    def __ge__(self, other) -> bool:
+        if self.value is None or (hasattr(other, 'value') and other.value is None):
             return True
         return float(self) >= float(other)
 
