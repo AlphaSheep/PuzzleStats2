@@ -1,10 +1,13 @@
-from typing import Deque, Optional, List
+from typing import Deque, Optional, List, NewType
 
 import math
 from abc import ABC, abstractmethod
 from bisect import insort, bisect_left
 from collections import deque
 from solves import Result
+
+
+Aggregation = NewType('Aggregation', str)
 
 
 class BaseMovingWindow(ABC):

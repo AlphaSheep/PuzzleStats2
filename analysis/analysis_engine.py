@@ -4,10 +4,11 @@ import json
 from jsonschema import validate
 from pandas import DataFrame
 
-from solves import StatisticCollection, Statistic, Result
+from solves import StatisticCollection, Statistic, Category
 from wca import get_official_results
 
-from .aggregations import MovingMeanWindow, MovingAverageWindow, BaseMovingWindow
+from .aggregations import MovingMeanWindow, MovingAverageWindow, BaseMovingWindow, Aggregation
+from .simplification import simplify
 
 
 _DEFAULT_CONFIG_FILE: Final[str] = "analysis_config.json"
@@ -24,7 +25,7 @@ class AnalysisEngine():
         self.wca_id: str = ''
 
         self.solves: StatisticCollection = StatisticCollection()
-        self.statistics: Dict[str, Dict[str, StatisticCollection]] = {}
+        self.statistics: Dict[Category, Dict[Aggregation, StatisticCollection]] = {}
         self.wca_singles: StatisticCollection = StatisticCollection()
         self.wca_averages: StatisticCollection = StatisticCollection()
 
@@ -78,6 +79,13 @@ class AnalysisEngine():
                 if len(theseSolves) < mean_of_size:
                     continue
 
+    def get_categories(self) -> Set[Category]:
+        categories = self.solves.get_distinct_categories()
+        if self.include_wca:
+            categories = categories.union(self.wca_singles.get_distinct_categories())
+            categories = categories.union(self.wca_averages.get_distinct_categories())
+        return categories
+
                 mean_key = f"{keyPrefix}{mean_of_size}"
 
                 calculator = Window(mean_of_size)
@@ -90,10 +98,6 @@ class AnalysisEngine():
                     for date, mean, category, source in zip(dates, means, categories, sources) \
                     if mean.has_result()
                 ])
-
-    def get_categories(self) -> Set[str]:
-        return self.solves.get_distinct_categories()
-
     def get_dataframe(self, selected_category: str) -> DataFrame:
         solves = self.solves.filter([category == selected_category for category in self.solves.category])
         df = DataFrame({'single': solves.as_timeseries()})
@@ -107,9 +111,9 @@ class AnalysisEngine():
             averages = self.wca_averages.filter([category == selected_category for category in self.wca_averages.category])
             df['wca_average'] = averages.as_timeseries()
 
-
-        for key, stats in self.statistics[selected_category].items():
-            df[key] = stats.as_timeseries()
+        if selected_category in self.statistics.keys():
+            for key, stats in self.statistics[Category(selected_category)].items():
+                df[key] = stats.as_timeseries()
 
         df.sort_index(inplace=True)
 

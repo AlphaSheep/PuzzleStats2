@@ -1,7 +1,10 @@
-from typing import List, Union, Dict, Set, Tuple, Final, Iterable, Generator, Callable, Any
+from typing import List, Union, Dict, Set, Tuple, Final, Iterable, Generator, Callable, Any, Optional, NewType
 
 from datetime import datetime, timedelta
 from pandas import DataFrame, Series
+
+
+Category = NewType('Category', str)
 
 
 _ZERO_TIME: Final[datetime] = datetime.strptime('00:00.00', '%M:%S.%f')
@@ -134,12 +137,16 @@ class Result:
 
 class Statistic:
 
-    def __init__(self, start: datetime, result: Result, category: str, source: str) -> None:
+    def __init__(self, start: datetime, result: Result, category: Category, source: str) -> None:
         self.date: datetime = start
 
         self.result: Result = result
-        self.category: str = category.strip()
+        self.category: Category = Category(category.strip())
         self.source: str = source.strip()
+
+    @staticmethod
+    def from_series(series: Series) -> 'Statistic':
+        return Statistic(series['date'], series['result'], series['category'], series['source'])
 
     def __repr__(self) -> str:
         return f"{self.category}: {self.result} . {self.date.strftime('%c')} ({self.source})"
@@ -170,8 +177,8 @@ class StatisticCollection():
     def append(self, solve: Statistic) -> None:
         self.solves.append(solve)
 
-    def filter(self, filter: Iterable[bool]) -> 'StatisticCollection':
-        return StatisticCollection([solve for solve, flag in zip(self.solves, filter) if flag])
+    def filter(self, filter_flags: Iterable[bool]) -> 'StatisticCollection':
+        return StatisticCollection([solve for solve, flag in zip(self.solves, filter_flags) if flag])
 
     def sort(self, key: Callable[[Statistic], Any] = lambda solve: solve.date) -> None:
         self.solves.sort(key=key)
@@ -208,7 +215,7 @@ class StatisticCollection():
             return f"SolveCollection(\n{self.solves[0]}\n{self.solves[1]}\n{self.solves[2]}\n...\n{self.solves[-3]}\n{self.solves[-2]}\n{self.solves[-1]}\n)"
 
     @property
-    def category(self) -> List[str]:
+    def category(self) -> List[Category]:
         return [s.category for s in self.solves]
 
     @property
@@ -223,7 +230,7 @@ class StatisticCollection():
     def source(self) -> List[str]:
         return [s.source for s in self.solves]
 
-    def get_distinct_categories(self) -> Set[str]:
+    def get_distinct_categories(self) -> Set[Category]:
         return set(self.category)
 
 
